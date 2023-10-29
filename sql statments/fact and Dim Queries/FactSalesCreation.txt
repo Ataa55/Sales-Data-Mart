@@ -1,0 +1,29 @@
+--fact table creation 
+IF EXISTS (SELECT *
+           FROM   sys.tables
+           WHERE  NAME = 'fact_sales')
+  DROP TABLE fact_sales;
+
+CREATE TABLE fact_sales
+  (
+     product_key    INT NOT NULL,
+     customer_key   INT NOT NULL,
+     territory_key  INT NOT NULL,
+     order_date_key INT NOT NULL,
+     sales_order_id VARCHAR(50) NOT NULL,
+     line_number    INT NOT NULL,
+     quantity       INT,
+     unit_price     MONEY,
+     unit_cost      MONEY,
+     tax_amount     MONEY,
+     freight        MONEY,
+     extended_sales MONEY,
+     extened_cost   MONEY,
+     created_at     DATETIME NOT NULL DEFAULT(Getdate()),
+	 constraint pk_fact_sales primary key clustered (sales_order_id,line_number),
+	 constraint fk_dim_product  FOREIGN key (product_key)  REFERENCES Dim_Product(ProductKey_SK),
+	 constraint fk_dim_customer FOREIGN key (customer_key) REFERENCES Dim_Customer(customer_key),
+	 constraint fk_dim_teritory FOREIGN key (territory_key)REFERENCES Dim_Territor(territory_key),
+	 constraint fk_dim_date		FOREIGN key (customer_key) REFERENCES dim_date(date_key)
+	 )
+

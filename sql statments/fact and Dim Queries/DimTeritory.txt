@@ -1,0 +1,15 @@
+--Dim_Territory Creation
+if exists (select * from sys.objects where name = 'Dim_Territor' and type = 'U')
+drop table Dim_Territorr;
+go
+create table Dim_Territor(
+     territory_key      INT NOT NULL primary key IDENTITY(1, 1),
+     territory_id       INT NOT NULL,
+     territory_name     NVARCHAR(50),
+     territory_country  NVARCHAR(400),
+     territory_group    NVARCHAR(50),
+     source_system_code  TINYINT NOT NULL,
+     __validFrom         DATETIME NOT NULL DEFAULT (Getdate()),
+     __ValidTo           DATETIME NULL,
+     is_current          TINYINT NOT NULL DEFAULT (1)
+  );

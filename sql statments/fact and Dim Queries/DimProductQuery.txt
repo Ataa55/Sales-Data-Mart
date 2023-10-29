@@ -1,0 +1,32 @@
+--Dim-product Creation
+if exists (select * from sys.objects where name = 'Dim_Product' and type = 'U')
+drop table Dim_Product;
+go
+create table Dim_Product(
+ProductKey_SK		int primary key identity(1,1),
+productID_BK		int,
+product_Name		nvarchar(50) not null,
+Product_Description nvarchar(400),
+Product_category	nvarchar(50),
+Product_SubCategory	nvarchar(50),
+color               NVARCHAR(15),
+model_name          NVARCHAR(50),
+reorder_point       SMALLINT,
+standard_cost       MONEY,
+
+--for data lineage
+
+source_sys_num		tinyint not null, 
+
+--SCD cols
+__validFrom			datetime not null default(getdate()),
+__validTo			datetime,
+is_current			tinyint not null default(1)
+);
+
+--indexes
+if exists(select * from sys.indexes where name  = 'dim_product_product_id' 
+									and object_id = object_id('Dim_Product'))
+drop index Dim_Product.dim_product_product_id;
+create index dim_product_product_id
+on Dim_Product(ProductKey_SK);

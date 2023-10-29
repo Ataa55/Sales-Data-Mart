@@ -1,0 +1,24 @@
+--Dim_Customer Creation
+if exists (select * from sys.objects where name = 'Dim_Customer' and type = 'U')
+drop table Dim_Customer;
+go
+create table Dim_Customer(
+     customer_key       INT NOT NULL primary key IDENTITY(1, 1),
+     customer_id        INT NOT NULL,
+     customer_name      NVARCHAR(150),
+     address1           NVARCHAR(100),
+     address2           NVARCHAR(100),
+     city               NVARCHAR(30),
+     phone              NVARCHAR(25),
+     -- birth_date date,
+     -- marital_status char(10),
+     -- gender char(1),
+     -- yearly_income money,
+     -- education varchar(50),
+     source_system_code TINYINT NOT NULL,
+     __validFrom         DATETIME NOT NULL DEFAULT (Getdate()),
+     __ValidTo           DATETIME NULL,
+     is_current         TINYINT NOT NULL DEFAULT (1)
+  );
+
+
